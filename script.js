@@ -10,7 +10,12 @@ function selectedValue(name) {
 }
 
 function updatePrice() {
-  const setup = Number(selectedValue('setup').dataset.price || 0);
+  const setupChoice = selectedValue('setup');
+  if (setupChoice.dataset.quote === 'true') {
+    price.textContent = 'CUSTOM QUOTE';
+    return;
+  }
+  const setup = Number(setupChoice.dataset.price || 0);
   const deck = Number(selectedValue('deck').dataset.price || 0);
   price.textContent = `$${(setup + deck).toLocaleString()}`;
 }
