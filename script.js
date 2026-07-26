@@ -1,4 +1,3 @@
-const basePrice = 260;
 const price = document.getElementById('build-price');
 const form = document.getElementById('board-builder');
 const menuButton = document.querySelector('.menu-button');
@@ -11,9 +10,9 @@ function selectedValue(name) {
 }
 
 function updatePrice() {
-  const options = ['shape', 'wood', 'finish'];
-  const total = options.reduce((sum, name) => sum + Number(selectedValue(name).dataset.price || 0), basePrice);
-  price.textContent = `$${total.toLocaleString()}`;
+  const setup = Number(selectedValue('setup').dataset.price || 0);
+  const deck = Number(selectedValue('deck').dataset.price || 0);
+  price.textContent = `$${(setup + deck).toLocaleString()}`;
 }
 
 document.querySelectorAll('#board-builder input[type="radio"]').forEach((input) => input.addEventListener('change', updatePrice));
@@ -33,14 +32,14 @@ nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () =>
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   if (!form.checkValidity()) { form.reportValidity(); return; }
-  const shape = selectedValue('shape').value;
+  const setup = selectedValue('setup').value;
+  const deck = selectedValue('deck').value;
   const wood = selectedValue('wood').value;
-  const finish = selectedValue('finish').value;
   const name = document.getElementById('customer-name').value.trim();
   const email = document.getElementById('customer-email').value.trim();
   const note = document.getElementById('customer-note').value.trim() || 'No additional notes yet.';
   const subject = encodeURIComponent(`Calitoy Customs build brief — ${name}`);
-  const body = encodeURIComponent(`CUSTOM BOARD BRIEF\n\nName: ${name}\nEmail: ${email}\nShape: ${shape}\nWood: ${wood}\nFinish: ${finish}\nStarting estimate: ${price.textContent}\n\nDirection / notes:\n${note}`);
+  const body = encodeURIComponent(`CUSTOM BOARD BRIEF\n\nName: ${name}\nEmail: ${email}\nSetup: ${setup}\nDeck: ${deck}\nWood: ${wood}\nBuild total: ${price.textContent}\n\nDirection / notes:\n${note}`);
   document.getElementById('build-notice').innerHTML = `Your brief is ready. <a href="mailto:joseph@tarosyn.com?subject=${subject}&body=${body}">SEND IT TO THE STUDIO →</a>`;
 });
 
